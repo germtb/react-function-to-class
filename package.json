@@ -10,8 +10,12 @@
   "activationEvents": [
     "react-function-to-class:toClass"
   ],
-  "description": "A short description of your package",
-  "repository": "https://github.com/atom/react-function-to-class",
+  "keywords": [
+    "refactor",
+    "react"
+  ],
+  "description": "Convert functions to React classes in a keystroke",
+  "repository": "https://github.com/germtb/react-function-to-class",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
