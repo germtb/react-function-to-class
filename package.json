@@ -1,6 +1,6 @@
 {
-  "name": "react-function-to-component",
-  "main": "./lib/react-function-to-component",
+  "name": "react-function-to-class",
+  "main": "./lib/react-function-to-class",
   "version": "0.0.0",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --source-maps --require babel-polyfill --require ./test-helper.js 'lib/**/*.test.js'",
@@ -8,10 +8,10 @@
     "test:debug": "npm run test -- --inspect --debug-brk"
   },
   "activationEvents": [
-    "react-function-to-component:toComponent"
+    "react-function-to-class:toClass"
   ],
   "description": "A short description of your package",
-  "repository": "https://github.com/atom/react-function-to-component",
+  "repository": "https://github.com/atom/react-function-to-class",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"

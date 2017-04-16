@@ -1,5 +1,5 @@
 {
 	"atom-text-editor": {
-		"ctrl-alt-c": "react-function-to-component:toComponent"
+		"ctrl-alt-c": "react-function-to-class:toClass"
 	}
 }
