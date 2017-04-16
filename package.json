@@ -1,7 +1,7 @@
 {
   "name": "react-function-to-class",
   "main": "./lib/react-function-to-class",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --source-maps --require babel-polyfill --require ./test-helper.js 'lib/**/*.test.js'",
     "test:watch": "npm run test -- --watch",
