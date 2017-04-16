@@ -1,5 +1,6 @@
 
 ## Convert functions to <React> classes with a keystroke
+- Default keymap: `alt` + `c`
 
 ![](https://raw.githubusercontent.com/germtb/gifs/master/react-function-to-class.gif)
 
