@@ -1,5 +1,0 @@
-{
-	"atom-text-editor": {
-		"alt-c": "react-function-to-class:toClass"
-	}
-}
