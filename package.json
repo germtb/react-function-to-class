@@ -1,7 +1,7 @@
 {
   "name": "react-function-to-class",
   "main": "./dist/bundle",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c --watch",
