@@ -200,80 +200,84 @@ var reactFunctionToClass = {
 	activate: function activate() {
 		var _this = this;
 
+		this.componentToInherit = atom.config.get('react-function-to-class.componentToInherit');
 		atom.config.observe('react-function-to-class.componentToInherit', function (value) {
 			_this.componentToInherit = value;
 		});
+		this.semicolons = atom.config.get('react-function-to-class.semicolons');
 		atom.config.observe('react-function-to-class.semicolons', function (value) {
 			_this.semicolons = value;
 		});
+		this.methodsToImplement.constructor = atom.config.get('react-function-to-class.constructor');
 		atom.config.observe('react-function-to-class.constructor', function (value) {
 			_this.methodsToImplement.constructor = value;
 		});
+		this.methodsToImplement.componentWillMount = atom.config.get('react-function-to-class.componentWillMount');
 		atom.config.observe('react-function-to-class.componentWillMount', function (value) {
 			_this.methodsToImplement.componentWillMount = value;
 		});
+		this.methodsToImplement.componentDidMount = atom.config.get('react-function-to-class.componentDidMount');
 		atom.config.observe('react-function-to-class.componentDidMount', function (value) {
 			_this.methodsToImplement.componentDidMount = value;
 		});
 		this.subscriptions = new atom$1.CompositeDisposable();
 		this.subscriptions.add(atom.commands.add('atom-workspace', {
-			'react-function-to-class:toClass': this.toClass
-		}));
-	},
-	toClass: function toClass$$1() {
-		var editor = atom.workspace.getActiveTextEditor();
-		var cursor = editor.getCursorBufferPosition();
-		var buffer = editor.getBuffer();
-		var data = buffer.getText();
-		var ast = parse(data, {
-			sourceType: 'module',
-			plugins: ['objectRestSpread', 'asyncGenerators', 'jsx', 'classProperties', 'exportExtensions']
-		});
+			'react-function-to-class:toClass': function reactFunctionToClassToClass() {
+				var editor = atom.workspace.getActiveTextEditor();
+				var cursor = editor.getCursorBufferPosition();
+				var buffer = editor.getBuffer();
+				var data = buffer.getText();
+				var ast = parse(data, {
+					sourceType: 'module',
+					plugins: ['objectRestSpread', 'asyncGenerators', 'jsx', 'classProperties', 'exportExtensions']
+				});
 
-		var range = void 0;
-		var callback = function callback(loc) {
-			range = toAtomRange(loc);
-			var line = cursor.row + 1;
-			var column = cursor.column;
+				var range = void 0;
+				var callback = function callback(loc) {
+					range = toAtomRange(loc);
+					var line = cursor.row + 1;
+					var column = cursor.column;
 
-			if (loc.start.line < line && loc.end.line > line) {
-				return true;
-			}
+					if (loc.start.line < line && loc.end.line > line) {
+						return true;
+					}
 
-			if (loc.start.line === line && loc.start.column <= column) {
-				return true;
-			}
+					if (loc.start.line === line && loc.start.column <= column) {
+						return true;
+					}
 
-			if (loc.end.line === line && loc.end.column >= column) {
-				return true;
-			}
+					if (loc.end.line === line && loc.end.column >= column) {
+						return true;
+					}
 
-			range = null;
-			return false;
-		};
-		var template = toClass(ast, buffer, callback, {
-			componentToInherit: this.componentToInherit,
-			methodsToImplement: this.methodsToImplement,
-			semicolons: this.semicolons
-		});
+					range = null;
+					return false;
+				};
+				var template = toClass(ast, buffer, callback, {
+					componentToInherit: _this.componentToInherit,
+					methodsToImplement: _this.methodsToImplement,
+					semicolons: _this.semicolons
+				});
 
-		if (range) {
-			var checkpoint = editor.createCheckpoint();
-			editor.setTextInBufferRange(range, template);
-			var rows = template.split('\n');
-			var start = range[0];
-			var firstRow = start[0];
-			var lastRow = start[0] + rows.length;
-			editor.autoIndentBufferRows(firstRow, lastRow);
-			for (var row = firstRow; row < lastRow; row += 1) {
-				if (buffer.isRowBlank(row)) {
-					editor.setSelectedBufferRange([[row, 0], [row, buffer.lineLengthForRow(row)]]);
-					editor.delete();
+				if (range) {
+					var checkpoint = editor.createCheckpoint();
+					editor.setTextInBufferRange(range, template);
+					var rows = template.split('\n');
+					var start = range[0];
+					var firstRow = start[0];
+					var lastRow = start[0] + rows.length;
+					editor.autoIndentBufferRows(firstRow, lastRow);
+					for (var row = firstRow; row < lastRow; row += 1) {
+						if (buffer.isRowBlank(row)) {
+							editor.setSelectedBufferRange([[row, 0], [row, buffer.lineLengthForRow(row)]]);
+							editor.delete();
+						}
+					}
+
+					editor.groupChangesSinceCheckpoint(checkpoint);
 				}
 			}
-
-			editor.groupChangesSinceCheckpoint(checkpoint);
-		}
+		}));
 	},
 	deactivate: function deactivate() {
 		this.subscriptions.dispose();
